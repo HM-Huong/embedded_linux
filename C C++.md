@@ -217,6 +217,107 @@ Câu lệnh trên sẽ định nghĩa macro `DEBUG` (và giá trị của nó s�
 
 [Đọc thêm](https://www.thegeekstuff.com/2010/03/debug-c-program-using-gdb/)
 
+### Compile the C program with debugging option -g
+
+```bash
+gcc -g file_name.c -o executable_name
+```
+
+Khi biên dịch chương trình với flag `-g`, compiler sẽ thêm thông tin gỡ lỗi vào file thực thi.
+
+### Start the gdb debugger
+
+```bash
+gdb executable_name
+```
+
+hoặc
+
+```bash
+gdb
+(gdb) file executable_name
+```
+
+Để chạy chương trình trong gdb, ta sử dụng lệnh `run` hoặc `r`:
+
+```bash
+(gdb) run
+```
+
+Nếu chương trình nhận đối số, ta có thể truyền đối số cho chương trình khi chạy trong gdb:
+
+```bash
+(gdb) run arg1 arg2 arg3
+```
+
+Nếu ta không đặt breakpoint và chương trình không gặp lỗi thì nó sẽ chạy như khi ta chạy một file thực thi bình thường.
+
+> Chú ý: Trong trường hợp chương trình đang chạy và ta sử dụng lệnh `run` một lần nữa, gdb sẽ bắt đầu chạy lại chương trình từ đầu.
+
+Để kết thúc chương trình đang chạy, ta sử dụng lệnh `kill`.
+
+### Thoát khỏi gdb
+
+```bash
+(gdb) quit
+# hoặc
+(gdb) q
+```
+
+### Đặt breakpoint và debug chương trình
+
+#### Breakpoints
+
+Khi chương trình chạy đến breakpoint, nó sẽ dừng lại và cho phép ta thực hiện các thao tác khác nhau như xem giá trị của biến, thay đổi giá trị của biến, ...
+
+Để đặt breakpoint, ta sử dụng lệnh `break` hoặc `b`:
+
+```bash
+(gdb) break file_name.c:line_number
+(gdb) b file_name.c:line_number
+(gdb) b function_name
+```
+
+#### Watch points
+
+Để tạm dừng chương trình khi giá trị của một biến thay đổi, ta sử dụng lệnh `watch variable_name`. Khi đó chương trình sẽ dừng lại và in ra giá trị của biến trước và sau khi thay đổi.
+
+#### Conditional breakpoints
+
+Conditional breakpoints chỉ khác breakpoint thông thường là nó chỉ tạm dừng chương trình khi một điều kiện nào đó được thỏa mãn.
+
+```bash
+(gdb) break file_name.c:line_number if condition
+```
+
+Ví dụ: Câu lệnh sau sẽ tạm dừng chương trình khi chương trình chạy đến dòng 10 của file `file1.c` và biến `x` có giá trị bằng `10`.
+
+```bash
+(gdb) break file1:10 if x == 10
+```
+
+#### Debugging commands
+
+> Tip: Nhấn enter trong gdb để chạy lại lệnh trước đó.
+
+- `continue` hoặc `c`: chạy chương trình đến breakpoint tiếp theo.
+- `next`/`n` hoặc `step`/`s`: chạy tới câu lệnh tiếp theo. Điểm khác biệt giữa `next` và `step` là `next` sẽ không đi sâu vào các câu lệnh trong hàm con, `next` coi hàm con như một câu lệnh duy nhất.
+- `print <variable_name>` hoặc `p <variable_name>`: xem giá trị của biến.
+- `display <variable_name>`: theo dõi giá trị của biến. Khi biến thay đổi giá trị, giá trị của biến sẽ được hiển thị tự động. Nếu không muốn theo dõi biến nữa, ta sử dụng lệnh `undisplay <display_number>`. Ngoài ra ta cũng có thể tạm thời disable bằng lệnh `disable <display_number>` và enable lại bằng lệnh `enable <display_number>`.
+- `set <variable_name> = <value>`: thay đổi giá trị của biến.
+- `delete <breakpoint_number>`: xóa breakpoint có số thứ tự là `breakpoint_number`.
+- `info breakpoints`: Hiển thị tất cả các breakpoint.
+- `backtrace`, `where`: Hiển thị stack trace.
+- `finish`: Chạy chương trình đến khi hàm hiện tại kết thúc.
+
+### Chạy câu lệnh shell trong gdb
+
+Để chạy một câu lệnh shell trong gdb, ta sử dụng lệnh `shell` theo sau là câu lệnh shell cần chạy:
+
+```bash
+(gdb) shell ls
+```
+
 ## Makefile
 
 Makefile có khả năng kiểm tra sự thay đổi trong source và chỉ build lại những file source có thay đổi.
