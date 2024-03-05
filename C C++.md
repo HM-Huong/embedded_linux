@@ -6,6 +6,10 @@
 
 #### `auto`
 
+Auto is just implicit in C, but due to how rarely (read never) it is used in actual code explicitly its meaning has changed in C++11.
+
+Auto just specifies automatic storage, meaning the variable will go away when it goes out of scope.
+
 #### `static`
 
 Biến `static` có thể được khai báo trong một hàm hoặc ngoài hàm.
@@ -51,9 +55,17 @@ Khai báo hàm hoặc biến có tác dụng thông báo rằng hàm hoặc bi�
 
 #### `register`
 
+Biến `register` được sử dụng để gợi ý complier rằng biến này sẽ được sử dụng nhiều lần và nên được lưu trữ trong thanh ghi của CPU để tăng tốc độ truy cập:
+
+```c
+register int x;
+```
+
 ### Type qualifiers
 
 #### `const`
+
+Biến `const` chỉ có thể được gán giá trị một lần duy nhất. Nói cách khác, giá trị của biến `const` không thể thay đổi sau khi đã được gán giá trị.
 
 #### `volatile`
 
