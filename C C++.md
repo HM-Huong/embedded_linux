@@ -335,3 +335,17 @@ Ví dụ: Câu lệnh sau sẽ tạm dừng chương trình khi chương trình 
 Makefile có khả năng kiểm tra sự thay đổi trong source và chỉ build lại những file source có thay đổi.
 
 [Đọc thêm](https://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/)
+
+## Files và Folders
+
+Trong linux, mọi thứ đều là file. Cả file và thư mục đều là file. Thư mục là một file chứa danh sách các file khác.
+
+**File descriptor**: là một số nguyên không âm được sử dụng để tham chiếu đến file hoặc thiết bị. File descriptor có thể được sử dụng trong các hàm đọc ghi file như `read`, `write`, `close`, `lseek`, ...
+
+Mỗi process khi khởi tạo sẽ có 3 file descriptor mặc định:
+
+- `0`: stdin
+- `1`: stdout
+- `2`: stderr
+
+[Đọc thêm: các hàm đọc ghi file và folder](./files_folders.md)
