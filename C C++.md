@@ -349,3 +349,21 @@ Mỗi process khi khởi tạo sẽ có 3 file descriptor mặc định:
 - `2`: stderr
 
 [Đọc thêm: các hàm đọc ghi file và folder](./files_folders.md)
+
+## Multi-threading
+
+Thread là một đơn vị nhỏ nhất của một process. Mỗi thread có một stack riêng, một instruction pointer riêng và một set các thanh ghi riêng. Tất cả các thread trong một process chia sẻ cùng một bộ nhớ.
+
+### Ưu điểm của multi-threading
+
+- Tăng tốc độ xử lý: Khi một thread đang chờ I/O, CPU có thể chuyển sang xử lý các thread khác.
+- Tận dụng nhiều CPU: Mỗi thread có thể chạy trên một CPU khác nhau.
+- Tận dụng nhiều core: Mỗi core có thể chạy một thread khác nhau.
+
+### Nhược điểm của multi-threading
+
+- Khó debug: Khi có nhiều thread chạy cùng lúc, việc debug sẽ trở nên khó khăn
+- Nếu một thread gây ra lỗi thì toàn bộ thread khác sẽ bị terminate
+- Cần phải sử dụng các cơ chế như mutex, semaphore, atomic, ... để đảm bảo việc đọc/ghi dữ liệu an toàn giữa các thread.
+
+[Đọc thêm](./multi_threading.md)
