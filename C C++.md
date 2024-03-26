@@ -71,9 +71,9 @@ Biến `const` chỉ có thể được gán giá trị một lần duy nhất. 
 
 [Đọc thêm](https://stackoverflow.com/questions/18695120/volatile-and-cache-behaviour)
 
-Volatile báo cho complier biết rằng giá trị của biến sẽ giữ nguyên giữa các lần đọc/ghi dữ liệu. Nói cách khác giá trị của biến có thể thay đổi bất kỳ lúc nào mà không cần phải thông qua mã nguồn của chương trình (memory-mapped I/O, DMA, ...). Do đó complier không được phép tối ưu hóa code chẳng hạn `v = 1; r = v` thành `v = 1; r = 1`.
+Volatile báo cho complier biết rằng giá trị của biến sẽ không giữ nguyên giữa các lần đọc/ghi dữ liệu. Nói cách khác giá trị của biến có thể thay đổi bất kỳ lúc nào mà không cần phải thông qua mã nguồn của chương trình (memory-mapped I/O, DMA, ...). Do đó complier không được phép tối ưu hóa code chẳng hạn `v = 1; r = v` thành `v = 1; r = 1` hoặc cache giá trị của biến trong thanh ghi của CPU mà phải đọc giá trị từ bộ nhớ mỗi lần cần.
 
-Ta cũng cần phải lưu ý rằng từ khóa `volatile` chỉ đảm bảo việc complier không tối ưu hóa code. Nó không đảm bảo việc đọc/ghi dữ liệu an toàn giữa các thread (vì dữ liệu có thể bị cache trên phần cứng). Do đó để đảm bảo việc đọc/ghi dữ liệu an toàn giữa các thread, ta cần sử dụng các cơ chế như mutex, semaphore, atomic, ...
+Ta cũng cần phải lưu ý rằng từ khóa `volatile` chỉ đảm bảo việc complier không tối ưu hóa code. Nó không đảm bảo việc đọc/ghi dữ liệu an toàn giữa các thread vì trong một số trường hợp, việc đọc/ghi dữ liệu có thể không là atomic (tức là dữ liệu có thể bị thay đổi giữa lúc đọc và ghi). Để đảm bảo việc đọc/ghi dữ liệu an toàn giữa các thread, ta cần phải sử dụng các cơ chế như mutex, semaphore, atomic, ...
 
 #### `restrict`
 
@@ -90,7 +90,7 @@ like keywords: void, char, short, int, etc.
 Biên dịch là một quá trình chuyển đổi mã nguồn từ một ngôn ngữ lập trình sang mã máy. Có nhiều công cụ để biên dịch mã nguồn C, một trong những công cụ phổ biến nhất là `gcc`. Để cài đặt `gcc` và các công cụ hữu ích khác, sử dụng lệnh sau:
 
 ```bash
-sudo apt install build-essential
+sudo apt install build-essential gdbserver
 ```
 
 Để biên dịch một file C ra một file thực thi (`a.out` trên Linux hoặc `a.exe` trên Windows), sử dụng lệnh sau:
