@@ -366,4 +366,4 @@ Thread là một đơn vị nhỏ nhất của một process. Mỗi thread có m
 - Nếu một thread gây ra lỗi thì toàn bộ thread khác sẽ bị terminate
 - Cần phải sử dụng các cơ chế như mutex, semaphore, atomic, ... để đảm bảo việc đọc/ghi dữ liệu an toàn giữa các thread.
 
-[Đọc thêm](./multi_threading.md)
+[Đọc thêm](./1-multi_threading.md)
