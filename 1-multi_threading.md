@@ -1,3 +1,14 @@
+# Phân biệt giữa process và thread
+## Process
+	là một thực thể độc lập thực thi một chương trình nào đó, nó có bộ nhớ riêng, resources riêng và môi trường thực thi riêng. Process được tạo ra bởi OS và được quản lí riêng biệt. Mỗi process được chạy một cách độc lập và giao tiếp với nhau thông qua cơ chế inter-process
+	Ví dụ: khi bạn mở một ứng dụng email, một process sẽ được tạo để xử lí thực thi ứng dụng này, process này có không gian bộ nhớ và luồng thực thi riêng. Nếu bạn mở nhiều ứng dụng email này thì một phiên bản chạy của nó sẽ là một process riêng biệt
+## Thread
+	thread là một phần giảm tải hơn khi thực thi mà nó tồn tại trong một process (a light-weight unit of execution), nó chia sẻ vùng nhơ svới tiến trình và truy cập trực tiếp vào tài nguyên của process đó. Thread trong process có thể giao tiếp với nhau một cách dễ dàng hơn so với cơ chế ỉnter-process. Thread cho phép thực thi đồng thời và có thể thực hiện đồng thời nhiều tác vụ trong một tiến trình.
+	Ví dụ: trong web browser, khi bạn mở nhiều tab và thao tác trên nhiều tab cùng một lúc thì mỗi tab có thể được coi là một thread trong một browser process duy nhất. Những thread này có thể cùng chia sẻ bộ nhớ và tài nguyên trong process, cho phép xử lí nhiều tác vụ như load wưeb, xử lí JS và user input.
+
+# Process, thread và task truct trong Linũ
+	Trong Linũ thì thread được coi như là process, mội thread có một thread_info riêng ở cuối mỗi stack và cũng có một task_struct riêng
+
 # Tạo một thread
 
 ```c
