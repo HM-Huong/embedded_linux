@@ -1,0 +1,19 @@
+{
+	"files.autoSave": "onFocusChange",
+	"editor.wordWrap": "on",
+	"markdown.copyFiles.destination": {
+		"/**/*": "attachments/${documentBaseName}/"
+	},
+	"[markdown]": {
+		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+	},
+	"markdown.editor.pasteUrlAsFormattedLink.enabled": "smart",
+	"markdown.updateLinksOnFileMove.enabled": "always",
+	"markdown.validate.enabled": true,
+	"markdown.preview.typographer": true,
+	"markdown.suggest.paths.includeWorkspaceHeaderCompletions": "onSingleOrDoubleHash",
+	"cSpell.language": "en,vi,lorem",
+	"cSpell.words": [
+		"struct"
+	]
+}
