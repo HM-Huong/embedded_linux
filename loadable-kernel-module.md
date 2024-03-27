@@ -162,7 +162,7 @@ void blink(void) {
 	int i;
 	for (i = 0; i < 10; ++i) {
 		writel_relaxed(LED, gpio0_base + GPIO_SETDATAOUT);
-		// TODO: fix this, using msleep() is not a good idea
+		// FIXME: using msleep() is not a good idea
 		// use msleep() inside a timer callback function can cause a kernel panic
 		// because msleep() will sleep the current process, and the timer callback function is running in interrupt context
 		// use dmesg to see the kernel panic message
@@ -207,5 +207,34 @@ void cleanup_module(void) {
 	del_timer_sync(&blink_timer);
 #endif
 	pr_info("Goodbye Mr.\n");
+}
+```
+
+Note: sửa file `c_cpp_properties.json` của vscode như sau để loại bỏ các lỗi về đường dẫn tới thư viện:
+
+```json
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/leo/bbb/kernelbuildscripts/KERNEL/include/**",
+                "/home/leo/bbb/kernelbuildscripts/KERNEL/arch/arm/include/**",
+                "/home/leo/bbb/kernelbuildscripts/dl/gcc-11.4.0-nolibc/arm-linux-gnueabi/lib/gcc/arm-linux-gnueabi/11.4.0/include/**"
+            ],
+            "defines": [
+                "KBUILD_MODNAME=\"BBB_MODULE\"",
+                "__GNUC__",
+                "__KERNEL__",
+                "MODULE"
+            ],
+            "compilerPath": "",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
 }
 ```
