@@ -352,7 +352,7 @@ Mỗi process khi khởi tạo sẽ có 3 file descriptor mặc định:
 
 ## Multi-threading
 
-Thread là một đơn vị nhỏ nhất của một process. Mỗi thread có một stack riêng, một instruction pointer riêng và một set các thanh ghi riêng. Tất cả các thread trong một process chia sẻ cùng một bộ nhớ.
+Thread là một đơn vị nhỏ nhất của một process. Mỗi thread có một stack riêng, một instruction pointer riêng và một set các thanh ghi riêng. Tất cả các thread trong một process **chia sẻ cùng một bộ nhớ**.
 
 ### Ưu điểm của multi-threading
 
@@ -367,3 +367,7 @@ Thread là một đơn vị nhỏ nhất của một process. Mỗi thread có m
 - Cần phải sử dụng các cơ chế như mutex, semaphore, atomic, ... để đảm bảo việc đọc/ghi dữ liệu an toàn giữa các thread.
 
 [Đọc thêm](./1-multi_threading.md)
+
+## Process
+
+Process là một chương trình đang chạy trên máy tính. Mỗi process có **một bộ nhớ riêng**, một stack riêng, một instruction pointer riêng và một set các thanh ghi riêng.
