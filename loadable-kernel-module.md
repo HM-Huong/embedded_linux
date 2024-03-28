@@ -156,21 +156,29 @@ void __iomem *gpio0_base;
 #if USE_TIMER_TO_BLINK_LED
 struct timer_list blink_timer;
 static void blink(struct timer_list *t) {
+	static int count = 0;
+	uint32_t reg = readl_relaxed(gpio0_base + GPIO_DATAOUT);
+
+	if (count < 10) {
+		count++;
+		reg ^= LED;
+		writel_relaxed(reg, gpio0_base + GPIO_DATAOUT);
+		mod_timer(t, jiffies + msecs_to_jiffies(1000));
+	} else {
+		count = 0;
+	}
+}
 #else
 void blink(void) {
-#endif
 	int i;
 	for (i = 0; i < 10; ++i) {
 		writel_relaxed(LED, gpio0_base + GPIO_SETDATAOUT);
-		// FIXME: using msleep() is not a good idea
-		// use msleep() inside a timer callback function can cause a kernel panic
-		// because msleep() will sleep the current process, and the timer callback function is running in interrupt context
-		// use dmesg to see the kernel panic message
 		msleep(1000);
 		writel_relaxed(LED, gpio0_base + GPIO_CLEARDATAOUT);
 		msleep(1000);
 	}
 }
+#endif
 
 // The init_module() function is called when the module is loaded into the kernel
 int init_module(void) {
@@ -189,7 +197,7 @@ int init_module(void) {
 #if USE_TIMER_TO_BLINK_LED
 	pr_info("use timer to blink LED\n");
 	timer_setup(&blink_timer, blink, 0);
-	add_timer(&blink_timer);
+	mod_timer(&blink_timer, jiffies + msecs_to_jiffies(1000));
 #else
 	pr_info("not use timer to blink LED\n");
 	blink();
