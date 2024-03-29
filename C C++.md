@@ -90,7 +90,7 @@ like keywords: void, char, short, int, etc.
 Biên dịch là một quá trình chuyển đổi mã nguồn từ một ngôn ngữ lập trình sang mã máy. Có nhiều công cụ để biên dịch mã nguồn C, một trong những công cụ phổ biến nhất là `gcc`. Để cài đặt `gcc` và các công cụ hữu ích khác, sử dụng lệnh sau:
 
 ```bash
-sudo apt install build-essential gdbserver
+sudo apt install build-essential gdb gdbserver
 ```
 
 Để biên dịch một file C ra một file thực thi (`a.out` trên Linux hoặc `a.exe` trên Windows), sử dụng lệnh sau:
@@ -329,6 +329,10 @@ Ví dụ: Câu lệnh sau sẽ tạm dừng chương trình khi chương trình 
 ```bash
 (gdb) shell ls
 ```
+
+### layout src
+
+Để hiển thị source code và các biến trong gdb, ta sử dụng lệnh `layout src`.
 
 ## Makefile
 
