@@ -29,9 +29,9 @@ Misc drivers sẽ tạo ra các device file trong `/dev/`. Khi ứng dụng thao
 
 Ứng dụng trên hệ điều hành Linux điều khiển đèn led thông qua device file `/dev/led_example` theo chuẩn như sau:
 
-- Ghi `'1'` vào file để bật đèn led.
-- Ghi `'0'` vào file để tắt đèn led.
-- Đọc file để lấy trạng thái đèn led (`'1'` là bật, `'0'` là tắt).
+- Ghi `1` vào file để bật đèn led.
+- Ghi `0` vào file để tắt đèn led.
+- Đọc file để lấy trạng thái đèn led (`1` là bật, `0` là tắt).
 - Có thể thiết lập và đọc số lần nháy đèn trước khi bật. Ví dụ khi đặt số lần nháy đèn là 10 thì đèn phải nháy 10 lân trước khi được bật.
 
 ### Bước 1: Tìm hiểu về mặt phần cứng của thiết bị ngoại vi cần điều khiển
@@ -42,9 +42,9 @@ Xem lại bài [loadable kernel module](./loadable-kernel-module.md)
 
 Ứng dụng trên hệ điều hành Linux điều khiển đèn led thông qua device file `/dev/led_example` theo chuẩn như sau:
 
-- Ghi `'1'` vào file để bật đèn led.
-- Ghi `'0'` vào file để tắt đèn led.
-- Đọc file để lấy trạng thái đèn led (`'1'` là bật, `'0'` là tắt).
+- Ghi `1` vào file để bật đèn led.
+- Ghi `0` vào file để tắt đèn led.
+- Đọc file để lấy trạng thái đèn led (`1` là bật, `0` là tắt).
 
 ### Bước 3: Tìm hiểu template driver cho thiết bị ngoại vi
 
@@ -125,11 +125,11 @@ static struct miscdevice misc_example = {
 
 int init_module(void) {
 	pr_info("Loading misc module...\n");
-
 	gpio0_base = ioremap(GPIO0_BASE_ADDR, GPIO0_SIZE);
 	misc_register(&misc_example);
 	g_led_timer = kmalloc(sizeof(struct LedTimerConfig), GFP_KERNEL);
-
+	g_led_timer->ledConfig.delay = 100;
+	g_led_timer->ledConfig.times = 10;
 	return 0;
 }
 
@@ -165,7 +165,7 @@ static ssize_t misc_read(struct file *file, char __user *buf, size_t len, loff_t
 	ret = copy_to_user(buf, &status, sizeof(status));
 	pr_info("\tstatus: %c, ret = %d\n", status, ret);
 
-	return ret;
+	return sizeof(status);
 }
 
 static ssize_t misc_write(struct file *file, const char __user *buf, size_t len, loff_t *ppos) {
@@ -175,9 +175,9 @@ static ssize_t misc_write(struct file *file, const char __user *buf, size_t len,
 
 	pr_info("Line %d, function %s\n", __LINE__, __func__);
 	pr_info("len: %zu, ppos: %lld\n", len, *ppos);
-
-	memset(&local_buf, 0, sizeof(local_buf));
-	ret = copy_from_user(&local_buf, buf, len > sizeof(local_buf) ? sizeof(local_buf) : len);
+	len = len > sizeof(local_buf) ? sizeof(local_buf) : len;
+	memset(&local_buf, 0, len);
+	ret = copy_from_user(&local_buf, buf, len);
 	pr_info("\tlocal_buf: %s\n", local_buf);
 
 	switch (local_buf[0]) {
@@ -187,14 +187,8 @@ static ssize_t misc_write(struct file *file, const char __user *buf, size_t len,
 		writel_relaxed(reg, gpio0_base + GPIO_DATAOUT);
 		break;
 	case '1':
-		if (g_led_timer->ledConfig.times > 0) {
-			timer_setup(&g_led_timer->timer, blink, 0);
-			mod_timer(&g_led_timer->timer, jiffies);
-		} else {
-			reg = readl_relaxed(gpio0_base + GPIO_DATAOUT);
-			reg |= LED;
-			writel_relaxed(reg, gpio0_base + GPIO_DATAOUT);
-		}
+		timer_setup(&g_led_timer->timer, blink, 0);
+		mod_timer(&g_led_timer->timer, jiffies);
 		break;
 	default:
 		pr_info("\tInvalid command\n");
@@ -242,6 +236,17 @@ static long misc_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {
 ```
 
 ### Test driver
+
+Thao tác với device file `/dev/misc_example` bằng các lệnh sau:
+
+```bash
+echo "1" > /dev/misc_example
+cat /dev/misc_example
+echo "0" > /dev/misc_example
+cat /dev/misc_example
+```
+
+Hoặc sử dụng code tầng ứng dụng được viết bằng C:
 
 ```c
 /*
