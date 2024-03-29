@@ -334,6 +334,34 @@ Ví dụ: Câu lệnh sau sẽ tạm dừng chương trình khi chương trình 
 
 Để hiển thị source code và các biến trong gdb, ta sử dụng lệnh `layout src`.
 
+### Một số trình gỡ lỗi khác
+
+- gdb: code sẽ được chạy trên máy ảo của gdb
+- address sanitizer: mạnh về việc debug các lỗi liên quan đến truy cập ngoài phạm vi bằng cách chèn thêm padding vào sau các biến để kiểm tra xem chương trình có ghi vào vùng nhớ không được cấp phát (padding) hay không.
+
+	```bash
+	gcc -g -fsanitize=address -static-libasan file_name.c -o executable_name
+	gdb executable_name
+	```
+
+- valgrind: mạnh về việc debug memory leak. Sau khi kết thúc chương trình, valgrind sẽ in ra các vùng nhớ không được giải phóng.
+
+	```bash
+	sudo apt install valgrind
+	gcc -g file_name.c -o executable_name
+	valgrind --leak-check=yes ./executable_name
+	```
+
+- core dump file analysis: debug kernel code
+
+### Dịch ngược
+
+Dịch ngược là quá trình chuyển đổi mã máy thành mã nguồn. Để dịch ngược một file thực thi, ta sử dụng công cụ `objdump`:
+
+```bash
+objdump -D -S executable_name
+```
+
 ## Makefile
 
 Makefile có khả năng kiểm tra sự thay đổi trong source và chỉ build lại những file source có thay đổi.

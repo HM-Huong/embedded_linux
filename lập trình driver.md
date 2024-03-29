@@ -8,6 +8,11 @@ Là những driver điều khiển các module trong SoC thông qua việc thao 
 
 Device drivers thao tác với các thiết bị được kết nối với SoC thông qua các API của platform drivers.
 
+## Không biết loại nào
+
+- Character drivers: đọc/ghi dữ liệu theo từng byte.
+- Block drivers: đọc/ghi dữ liệu theo từng block.
+
 # Các bước viết driver
 
 1. Tìm hiểu về mặt phần cứng của thiết bị ngoại vi cần điều khiển.
@@ -52,8 +57,6 @@ Xem lại bài [loadable kernel module](./loadable-kernel-module.md)
 <https://elixir.bootlin.com/linux/latest/source/include/linux/fs.h#L1983>
 
 ### Bước 4: Viết driver cho thiết bị ngoại vi
-
-TODO: tìm hiểu macro `container_of` trong C.
 
 File `config.h`:
 
@@ -235,9 +238,14 @@ static long misc_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {
 }
 ```
 
+Một số hàm khác:
+
+- `dump_stack()`: in ra stack trace theo thứ tự từ hàm được gọi gần nhất đến hàm được gọi xa nhất.
+
 ### Test driver
 
 Thao tác với device file `/dev/misc_example` bằng các lệnh sau:
+FIXME: cat file không có ký tự kết thúc file.
 
 ```bash
 echo "1" > /dev/misc_example
