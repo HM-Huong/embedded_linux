@@ -41,7 +41,7 @@ Misc drivers sẽ tạo ra các device file trong `/dev/`. Khi ứng dụng thao
 
 ### Bước 1: Tìm hiểu về mặt phần cứng của thiết bị ngoại vi cần điều khiển
 
-Xem lại bài [loadable kernel module](./loadable-kernel-module.md)
+Xem lại bài [loadable kernel module](./3-loadable-kernel-module.md)
 
 ### Bước 2: Tìm hiểu chuẩn giao tiếp giữa thiết bị ngoại vi và máy tính
 
