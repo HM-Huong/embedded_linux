@@ -101,11 +101,11 @@ sudo apt-get install linux-headers-`uname -r`
 Để build module cho Beaglebone Black, ta cần phải có cross compiler. Ta có thể tham khảo cách cài đặt cross compiler [ở đây](https://forum.digikey.com/t/debian-getting-started-with-the-beaglebone-black/12967#linux-kernel-6)
 
 ```makefile
-obj-m += main.o
+obj-m += main.o // tên file được compile và bắt buộ chấm.o
 
-PWD := $(shell pwd)
+PWD := $(shell pwd) // đường dẫn chỉ định file sau khi được compile sẽ được lưu ở đâu
 CROSS=/home/leo/bbb/kernelbuildscripts/dl/gcc-11.4.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-
-KER_DIR=/home/leo/bbb/kernelbuildscripts/KERNEL
+KER_DIR=/home/leo/bbb/kernelbuildscripts/KERNEL // tro vao source kernel
 
 all:
 	make ARCH=arm CROSS_COMPILE=$(CROSS) -C $(KER_DIR) M=$(PWD) modules
@@ -113,7 +113,11 @@ all:
 clean:
 	make -C $(KER_DIR) M=$(PWD) clean
 ```
-
+- gcc-mininal: build code uboot
+- x86_64-gcc-11.3.0-nolibc-arm-linux-gnueabi.tar.xz: build code app, không có thư viện C
+- x86_64-gcc-10.5.0-nolibc-arm-linux-gnueabi.tar.xz: build kernel, kernel module, path: ~/bbb/kernelbuildscripts/dl/gcc-10.5.0-nolibc/arm-linux-gnueabi/arm-linux-gnueabi
+- KER_DIR: chỉ đến thư mục chứa source code của kernel, quá trình makefile sẽ chạy trong context của thư mục kernel nhưng các file tạo ra nằm trên thư mục pwd
+- some case: try to run: make ARCH=arm CROSS_COMPILE=/home/ducky/bbb/kernelbuildscripts/dl/gcc-10.5.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi- -C /home/ducky/bbb/kernelbuildscripts/KERNEL M=/home/ducky/Documents/kernel modules
 ## Blink LED trên BeagleBone Black
 
 Đoạn chương trình sau sẽ nháy LED được kết nối với pin P9.13 trên BeagleBone Black.
@@ -246,3 +250,10 @@ Note: sửa file `c_cpp_properties.json` của vscode như sau để loại bỏ
     "version": 4
 }
 ```
+# Step to load/unload kernel module
+- Copy file kernel đã được build trc đó sang board: scp main.o debian@ipboard:/home/debian
+- Để load được kernel module này cần dùng quyền root: sudo su
+- lsmod: kiểm tra những kernel module đã được load lên board
+- insmod main.o: load kernel
+- dmesg: xem log của kernel
+- rmod main.o: unload kernel
