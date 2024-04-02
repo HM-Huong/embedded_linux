@@ -134,6 +134,21 @@ int main() {
     return 0;
 }
 
-``
+```
 hàm execl() đã thay thế hoàn toàn không gian bộ nhớ và chương trình của process con bằng một chương trình khác
 tuy nhiên khi hàm con đã thực thi xong và return signal cho hàm cha để xác nhận kết thúc, nếu ko nhận được phản hồi thì hàm con rơi vào trạng thái zombie và phải dùng hàm wait() để đợi tín hiệu từ hàm con return
+
+# Ưu nhược điểm khi dùng thread và process
+- **Thread:**
+  - **Ưu điểm:**
+    - **Hiệu quả về bộ nhớ:** Các thread chia sẻ cùng một không gian bộ nhớ, giúp giảm bớt tài nguyên bộ nhớ cần thiết.
+    - **Giao tiếp dễ dàng:** Việc trao đổi dữ liệu giữa các thread trong cùng một process dễ dàng hơn do chúng chia sẻ bộ nhớ.
+  - **Nhược điểm:**
+    - **An toàn:** Nếu một thread gặp sự cố và bị crash, nó có thể làm sập cả process, ảnh hưởng đến tất cả các thread khác.
+
+- **Process:**
+  - **Ưu điểm:**
+    - **Độc lập:** Mỗi process có không gian bộ nhớ riêng biệt, nên một process bị crash không ảnh hưởng đến các process khác.
+  - **Nhược điểm:**
+    - **Tài nguyên:** Việc tạo và quản lý nhiều process đòi hỏi nhiều tài nguyên hơn so với thread.
+    - **Giao tiếp phức tạp:** Việc giao tiếp giữa các process khó khăn hơn do không gian bộ nhớ riêng biệt.

@@ -14,7 +14,8 @@ Ví dụ: trong web browser, khi bạn mở nhiều tab và thao tác trên nhi�
 
 # Process, thread và task struct trong Linux
 
-Trong Linux thì thread được coi như là process, mội thread có một thread_info riêng ở cuối mỗi stack và cũng có một task_struct riêng
+Trong Linux thì thread được coi như là process, một thread có một thread_info riêng ở cuối mỗi stack và cũng có một task_struct riêng
+`task_struct` được dùng cho cả process lẫn thread còn `thread_infor` chỉ lưu trữ thông tin cho một thread
 
 # Tạo một thread
 
