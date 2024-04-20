@@ -155,7 +155,7 @@ Driver và application chia sẻ và sử dụng một vùng nhớ chung. Thư�
 
 5. Giải phóng shared memory:
 
-	Khác với `malloc`, shared memory không tự giải phóng khi process kết thúc (vì có thể có nhiều process sử dụng shared memory). Do đó, cần phải giải phóng shared memory bằng hàm `shm_unlink()`:
+	Khác với `malloc`, shared memory **không tự giải phóng khi process kết thúc** (vì có thể có nhiều process sử dụng shared memory). Do đó, cần phải giải phóng shared memory bằng hàm `shm_unlink()`:
 
 	```c
 	shm_unlink("Identifier name");

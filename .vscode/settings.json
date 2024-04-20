@@ -14,8 +14,10 @@
 	"markdown.suggest.paths.includeWorkspaceHeaderCompletions": "onSingleOrDoubleHash",
 	"cSpell.language": "en,vi,lorem",
 	"cSpell.words": [
+		"devicetree",
 		"gdbserver",
 		"lpthread",
+		"phandle",
 		"pthread",
 		"scanf",
 		"struct",
