@@ -133,6 +133,11 @@ gcc --save-temps file_name.c -o executable_name
 
 > Chú ý: đầu ra của quá trình tiền xử lý được lưu trữ trong file có đuôi `.i`.
 
+##### Một số toán tử tiền xử lý
+
+- `#`: chuyển đổi một token thành một chuỗi hằng bằng cách thêm dấu nháy kép vào đầu và cuối token. Ví dụ: `#define STR(x) #x` thì `STR(hello)` sẽ được chuyển thành `"hello"`.
+- `##`: nối hai token lại với nhau. Ví dụ: `#define CONCAT(x, y) x ## y` thì `CONCAT(Hello, World)` sẽ được chuyển thành `HelloWorld`.
+
 #### Compiling
 
 Trình biên dịch sẽ tổng hợp các file `.i` của quá trình tiền xử lý thành các file assembly (`.s`).
